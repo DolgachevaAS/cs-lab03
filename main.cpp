@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
-
+#include "histogram.h"
+#include <string>
 using namespace std;
 
 vector<double> input_numbers(const size_t count)
@@ -14,29 +15,14 @@ cin >> result[i];
 return result;
 }
 
-void find_minmax (const vector<double>& numbers, double& min, double& max)
-{
-min = numbers[0];
-max = numbers[0];
-for (double number : numbers)
-{
-if (number < min)
-{
-min = number;
-}
-if (number > max)
-{
-max = number;
-}
-}
-}
+
 
 vector<size_t> make_histogram(const vector<double>& numbers, const size_t count)
 {
 vector<size_t> result(count);
 double min;
 double max;
-find_minmax(numbers, min, max);
+ find_minmax(numbers, min, max);
 for (double number : numbers)
 {
 size_t bin = (size_t)((number - min) / (max - min) * count);
@@ -129,18 +115,16 @@ const auto TEXT_BASELINE = 20;
 const auto TEXT_WIDTH = 50;
 const auto BIN_HEIGHT = 30;
 const auto BLOCK_WIDTH = 10;
+ svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
 double top = 0;
 for (size_t bin : bins) {
 const double bin_width = BLOCK_WIDTH * bin;
-svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
-svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT);
+svg_text(TEXT_LEFT, top + TEXT_BASELINE,to_string(bin));
+svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT,"red", "#ffeeee");
 top += BIN_HEIGHT;
 }
 svg_end();
 }
-void svg_text(double left, double baseline, string text);
-void svg_rect(double x, double y, double width, double height,
-string stroke, string fill);
 
 
 
