@@ -1,0 +1,9 @@
+# depslib dependency file v1.0
+1587667095 source:c:\users\јлександра\desktop\учеба\семестр 2\программирование 2 сем\готовые лабораторные\lab03_выполнение\lab03\histogram.cpp
+	<vector>
+	<iostream>
+	"histogram.h"
+
+1587667095 c:\users\јлександра\desktop\учеба\семестр 2\программирование 2 сем\готовые лабораторные\lab03_выполнение\lab03\histogram.h
+	<vector>
+

@@ -3,12 +3,20 @@
 #include <cassert>
 
 
+#include "histogram.h"
 
-int
-main() {
+#include <cassert>
+
+void test_same() {
+    double min = 0;
+    double max = 0;
+    find_minmax({-2,-2,-2}, min, max);
+    assert(min == -2);
+    assert(max == -2);
+}
+
+int main() {
     test_positive();
-    test_negative();
+    test_otr();
     test_same();
-    test_one();
-    test_empty();
 }
