@@ -14,8 +14,7 @@ input_numbers (size_t count)
     }
 return result;
 }
-vector<size_t>
-make_histogram(const vector <double> &numbers,double &max, double &min, size_t &bin_count)
+vector<size_t> make_histogram(const vector <double> &numbers,double &max, double &min, size_t &bin_count)
 {
     vector<size_t>bins(bin_count,0); /* массив из индексов корзин */
     for(double x : numbers) /* мы каждому x присваиваем последовательно каждый элемент массива "numbers" */
@@ -23,7 +22,7 @@ make_histogram(const vector <double> &numbers,double &max, double &min, size_t &
         size_t bin_index=(size_t)((x-min)*bin_count/(max-min));
         if (bin_index==bin_count) /* индекс корзины "bin_index"*/
         {
-            bin_index=bin_index-1; /* нумирация идет с 0*/
+            bin_index=bin_index-1;
         }
         bins[bin_index]++;
     }
