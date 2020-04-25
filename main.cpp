@@ -4,15 +4,14 @@
 #include "histogram.h"
 
 using namespace std;
-vector<double>
-input_numbers (size_t count)
+vector<double> input_numbers (size_t count)
 {
     vector <double> result(count);
     for (int i=0; i<count; i++)
     {
         cin>>result[i];
     }
-return result;
+    return result;
 }
 vector<size_t> make_histogram(const vector <double> &numbers,double &max, double &min, size_t &bin_count)
 {
@@ -31,12 +30,9 @@ vector<size_t> make_histogram(const vector <double> &numbers,double &max, double
 
 void svg_text(double left, double baseline, string text)
 {
-     cout << "<text x='"<<left<<"' y='"<<baseline<<"'>"<<text<<"</text>";
+    cout << "<text x='"<<left<<"' y='"<<baseline<<"'>"<<text<<"</text>";
 }
-void svg_proc(double left, double baseline, string text)
-{
-     cout << "<text x='"<<left<<"' y='"<<baseline<<"'>"<<text<<"%</text>";
-}
+
 void svg_rect(double x, double y, double width, double height,string stroke= "black", string fill= "black")
 {
     cout<< "<rect x='"<<x<<"' y='"<<y<<"' width='"<<width<<"' height='"<<height<<"' stroke='red' fill='blue'/>";
@@ -55,7 +51,7 @@ void svg_end()
 {
     cout << "</svg>\n";
 }
-void show_histogram_svg(const vector<size_t>& bins, size_t &number_count)
+void show_histogram_svg(const vector<size_t>& bins, size_t& number_count)
 {
     const size_t MAX_ASTERISK=30;
     const auto IMAGE_WIDTH = 400;
@@ -65,6 +61,7 @@ void show_histogram_svg(const vector<size_t>& bins, size_t &number_count)
     const auto TEXT_WIDTH = 50;
     const auto BIN_HEIGHT = 30;
     const auto BLOCK_WIDTH = 10;
+    const auto WIDTH_TO_PROCENT = 370;
     svg_begin(IMAGE_WIDTH, IMAGE_HEIGHT);
     double top = 0;
     unsigned max_count=0;
@@ -76,8 +73,8 @@ void show_histogram_svg(const vector<size_t>& bins, size_t &number_count)
     for (size_t bin : bins)
     {
         size_t height=30;
-            if(max_count>MAX_ASTERISK) /* Если количество будет больше 35, то уменьшаем масштаб*/
-                height=MAX_ASTERISK*((static_cast<double>(bin))/max_count); /* это для того,чтобы было дробное число , получаем, используя "static_cast<double>"*/
+        if(max_count>MAX_ASTERISK) /* Если количество будет больше 35, то уменьшаем масштаб*/
+            height=MAX_ASTERISK*((static_cast<double>(bin))/max_count); /* это для того,чтобы было дробное число , получаем, используя "static_cast<double>"*/
         else
         {
             height=bin;
@@ -85,12 +82,13 @@ void show_histogram_svg(const vector<size_t>& bins, size_t &number_count)
         height = BLOCK_WIDTH * height;
         svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
         svg_rect(TEXT_WIDTH, top, height, BIN_HEIGHT, "red", "#aaffaa");
-        size_t pr=(size_t)(bin*100/number_count);
-        svg_proc(370, top + TEXT_BASELINE, to_string(pr));
+        size_t pr=procent(number_count,bin);
+        svg_text( WIDTH_TO_PROCENT, top + TEXT_BASELINE, to_string(pr)+"%");
         top += BIN_HEIGHT;
     }
     svg_end();
 }
+
 int main()
 {
     double left;
