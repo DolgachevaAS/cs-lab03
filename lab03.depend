@@ -76,19 +76,59 @@
 1587993276 c:\users\Александра\desktop\lab03&04\lab03\histogram1.h
 	<vector>
 
-1588931282 source:c:\users\Александра\desktop\lab03&04\lab03\svg.cpp
+1588931962 source:c:\users\Александра\desktop\lab03&04\lab03\svg.cpp
 	<iostream>
 	"svg.h"
 	"histogram1.h"
 
-1588931282 c:\users\Александра\desktop\lab03&04\lab03\svg.h
+1588931962 c:\users\Александра\desktop\lab03&04\lab03\svg.h
 	<iostream>
 	<vector>
 
-1588929118 source:c:\users\Александра\desktop\lab03&04\lab03\main.cpp
+1588943008 source:c:\users\Александра\desktop\lab03&04\lab03\main.cpp
 	<iostream>
 	<vector>
 	<conio.h>
+	<curl/curl.h>
 	"histogram.h"
 	"svg.h"
+
+1587991348 c:\users\Александра\desktop\lab03&04\lab03\curl\include\curl\curl.h
+	"curlver.h"
+	"system.h"
+	<stdio.h>
+	<limits.h>
+	<osreldate.h>
+	<sys/types.h>
+	<time.h>
+	<winsock2.h>
+	<ws2tcpip.h>
+	<sys/select.h>
+	<sys/socket.h>
+	<sys/time.h>
+	<support/SupportDefs.h>
+	"easy.h"
+	"multi.h"
+	"urlapi.h"
+	"typecheck-gcc.h"
+
+1588129392 c:\users\Александра\desktop\lab03&04\lab03\curl\include\curl\curlver.h
+
+1587548874 c:\users\Александра\desktop\lab03&04\lab03\curl\include\curl\system.h
+	<winsock2.h>
+	<windows.h>
+	<ws2tcpip.h>
+	<sys/types.h>
+	<sys/socket.h>
+	<sys/poll.h>
+
+1587548874 c:\users\Александра\desktop\lab03&04\lab03\curl\include\curl\easy.h
+
+1587548874 c:\users\Александра\desktop\lab03&04\lab03\curl\include\curl\multi.h
+	"curl.h"
+
+1587548874 c:\users\Александра\desktop\lab03&04\lab03\curl\include\curl\urlapi.h
+	"curl.h"
+
+1587548874 c:\users\Александра\desktop\lab03&04\lab03\curl\include\curl\typecheck-gcc.h
 
