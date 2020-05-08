@@ -85,11 +85,13 @@
 	<iostream>
 	<vector>
 
-1588943008 source:c:\users\Александра\desktop\lab03&04\lab03\main.cpp
+1588953198 source:c:\users\Александра\desktop\lab03&04\lab03\main.cpp
 	<iostream>
 	<vector>
 	<conio.h>
 	<curl/curl.h>
+	<sstream>
+	<string>
 	"histogram.h"
 	"svg.h"
 

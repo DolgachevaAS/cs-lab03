@@ -2,6 +2,8 @@
 #include <vector>
 #include <conio.h>
 #include<curl/curl.h>
+#include <sstream>
+#include <string>
 #include "histogram.h"
 #include "svg.h"
 
@@ -43,6 +45,34 @@ read_input(istream& in, bool prompt )
     }
     return Input;
 }
+size_t
+write_data(void* items, size_t item_size, size_t item_count, void* ctx) {
+    const size_t data_size = item_size * item_count;
+    const char* new_items = reinterpret_cast<const char*>(items);
+    stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
+    buffer->write(new_items, data_size);
+    return data_size;
+}
+
+Input
+download(const string& address) {
+    stringstream buffer;
+curl_global_init(CURL_GLOBAL_ALL);
+ CURL *curl = curl_easy_init();
+ if(curl) {
+CURLcode res;
+curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
+curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+ res = curl_easy_perform(curl);
+  if (res != CURLE_OK)
+  {
+     cout << curl_easy_strerror(res) << endl;
+     exit(1);
+  }
+  curl_easy_cleanup(curl);}
+ return read_input(buffer, false);
+ }
 
 
 vector<size_t>
@@ -69,29 +99,19 @@ make_histogram( struct Input Input)
 
 int main(int argc, char* argv[])
 {
+    Input input;
 
     if (argc > 1)
     {
-        CURL *curl = curl_easy_init();
-        if(curl)
-        {
-            CURLcode res;
-            curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
-            res = curl_easy_perform(curl);
-            res = CURLE_FAILED_INIT;
-            if (res != CURLE_OK)
-            {
-                cout << curl_easy_strerror(res) << endl;
-                exit(1);
-            }
-            curl_easy_cleanup(curl);
+                input = download(argv[1]);
+}
+        else {
+         input = read_input(cin, true);
         }
-        return 0;
-    }
-    curl_global_init(CURL_GLOBAL_ALL);
-    const auto Input=read_input(cin, true);
-    const auto bins = make_histogram (Input);
-    show_histogram_svg(bins,Input.bin_count);
+
+
+    const auto bins = make_histogram (input);
+    show_histogram_svg(bins,input.bin_count);
     return 0;
 
 }
