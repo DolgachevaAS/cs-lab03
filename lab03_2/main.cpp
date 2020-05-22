@@ -3,6 +3,8 @@
 #include <string>
 #include "histogram.h"
 #include "svg.h"
+#include <cstdio>
+#include <windows.h>
 using namespace std;
 
 vector<double> input_numbers(const size_t count) {
@@ -69,7 +71,11 @@ void show_histogram_text(vector<size_t> bins) {
 
 
 int main() {
-    // Ââîä äàííûõ
+
+    printf("WinVersion  %x\n", GetVersion());
+    printf("WinVersion  %u\n", GetVersion());
+
+
     size_t number_count;
     cerr << "Enter number count: ";
     cin >> number_count;
@@ -82,10 +88,10 @@ int main() {
     cerr << "Enter column count: ";
     cin >> bin_count;
 
-    // Îáðàáîòêà äàííûõ
+
     const auto bins = make_histogram(numbers, bin_count);
 
-    // Âûâîä äàííûõ
+
     show_histogram_svg(bins);
 
     return 0;
