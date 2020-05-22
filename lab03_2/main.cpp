@@ -7,6 +7,11 @@
 #include <windows.h>
 using namespace std;
 
+
+
+
+
+
 vector<double> input_numbers(const size_t count)
 {
     vector<double> result(count);
@@ -85,7 +90,10 @@ void show_histogram_text(vector<size_t> bins)
 
 int main()
 {
-
+   /* char system_dir[MAX_COMPUTERNAME_LENGTH + 1];
+    DWORD Size = sizeof(system_dir);
+    GetComputerNameA(system_dir, &Size);
+    printf("System name: %s\n", system_dir);
     printf("WindowsVersion  %x\n", GetVersion());
     printf("WindowsVersion  %u\n", GetVersion());
     DWORD mask = 0x0000ffff;
@@ -104,7 +112,7 @@ int main()
     if ((info &0x40000000) == 0) {
         DWORD build = platform;
         printf("build: %u.\n", build);
-    }
+    } */
 
     size_t number_count;
     cerr << "Enter number count: ";
