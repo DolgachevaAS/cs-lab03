@@ -3,7 +3,6 @@
 #include <string>
 #include "histogram.h"
 #include "svg.h"
-#include <cstdio>
 using namespace std;
 
 vector<double> input_numbers(const size_t count) {
@@ -70,13 +69,7 @@ void show_histogram_text(vector<size_t> bins) {
 
 
 int main() {
-
-    const char* name = "Commander Shepard"; //printf
-    int year = 2154;
-    printf("%s was born in %d.\n", name, year);
-    printf("n = %08x\n", 0x1234568);
-    return 0;
-
+    // Ââîä äàííûõ
     size_t number_count;
     cerr << "Enter number count: ";
     cin >> number_count;
@@ -89,10 +82,10 @@ int main() {
     cerr << "Enter column count: ";
     cin >> bin_count;
 
-
+    // Îáðàáîòêà äàííûõ
     const auto bins = make_histogram(numbers, bin_count);
 
-
+    // Âûâîä äàííûõ
     show_histogram_svg(bins);
 
     return 0;
