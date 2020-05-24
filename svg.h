@@ -12,3 +12,4 @@ void svg_text1(double left, double baseline, string text);
 void show_histogram_svg(const vector<size_t> bins, struct Input& Input);
 
 #endif // SVG_H_INCLUDED
+

@@ -1,3 +1,4 @@
+
 #include<vector>
 #include <iostream>
 #include "histogram.h"
@@ -23,7 +24,6 @@ void find_minmax (const vector<double>& numbers, double& min, double& max)
             }
         }
     }
-
 }
 
 string make_info_text()
