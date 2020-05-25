@@ -2,6 +2,7 @@
 #include<vector>
 #include <iostream>
 #include"histogram1.h"
+
 using namespace std;
 size_t procent( size_t number_count, size_t bin)
 {

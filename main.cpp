@@ -36,14 +36,14 @@ read_input(istream& in, bool prompt )
         cerr << "Enter numbers: ";
         Input.numbers = input_numbers(in, Input.number_count);
 
-        cerr << "Enter bin count: ";
-        in >> Input.bin_count;
+        cerr << "Enter bin count: ";// не нужно
+        in >> Input.bin_count;// не нужно
     }
     else
     {
         in >> Input.number_count;
         Input.numbers = input_numbers(in, Input.number_count);
-        in >> Input.bin_count;
+        in >> Input.bin_count;// не нужно
     }
     return Input;
 }
@@ -103,7 +103,66 @@ make_histogram( struct Input Input)
 
 
 
-int main(int argc, char* argv[])
+int main(int argc, char* argv[]) {
+
+Input input;
+
+if (argc > 1)
+
+{
+
+//input = download(argv[1]);
+
+cout<<argv[1];
+
+if(argc==3&&!strcmp (argv[1], "-bins"))
+
+{
+
+cout<<argv[2];
+
+size_t chislo= atoi(argv[2]);// atoi переводит в число количество координат
+
+if(chislo>1&&chislo<32768)
+
+cout<<78;
+
+else
+
+{
+
+cout<<"Enter options that match the condition";
+
+return 0;
+
+}
+
+}
+
+else
+
+{
+
+input = read_input(cin, true);
+
+}}
+
+//const auto bins=make_histogram(input);
+
+//show_histogram_svg(bins);
+
+return 0;
+
+}
+
+
+
+
+
+
+
+
+/*int main(int argc, char* argv[])
 {
     /* char system_dir[MAX_COMPUTERNAME_LENGTH + 1];
     DWORD Size = sizeof(system_dir);
@@ -128,11 +187,22 @@ int main(int argc, char* argv[])
         printf("build: %u.\n", build);
     } */
 
-    Input input;
+/*    Input input;
 
-    if (argc > 1)
+    if (argc > 2)
     {
-        input = download(argv[1]);
+        /* for ( int i=0;i<argc;i++)
+        {
+    if (string(argv[i])=="-bins")
+    {
+    cerr<<"напечатайте число";
+    }
+   const auto bins=-bins; ???
+        }
+
+    */
+
+    /*    input = download(argv[1]);
     }
     else
     {
@@ -140,8 +210,8 @@ int main(int argc, char* argv[])
     }
 
 
-    const auto bins = make_histogram (input);
+const auto bins = make_histogram (input);
     show_histogram_svg(bins,input);
     return 0;
 
-}
+}*/
