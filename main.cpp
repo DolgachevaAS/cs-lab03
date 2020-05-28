@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <conio.h>
+#include <stdlib.h>
 #include <curl/curl.h>
 #include <sstream>
 #include <string>
@@ -36,14 +37,14 @@ read_input(istream& in, bool prompt )
         cerr << "Enter numbers: ";
         Input.numbers = input_numbers(in, Input.number_count);
 
-        cerr << "Enter bin count: ";
-        in >> Input.bin_count;
+        /*cerr << "Enter bin count: ";
+        in >> Input.bin_count;*/
     }
     else
     {
         in >> Input.number_count;
         Input.numbers = input_numbers(in, Input.number_count);
-        in >> Input.bin_count;
+       // in >> Input.bin_count;
     }
     return Input;
 }
@@ -128,19 +129,48 @@ int main(int argc, char* argv[])
         printf("build: %u.\n", build);
     } */
 
-    Input input;
-
-    if (argc > 1)
+    string info = make_info_text();
+  Input input;
+bool exist_bins = false;  int argument; int i = 0;
+    if(argc > 1)
     {
-        input = download(argv[1]);
+        cout << "argc=" << argc << endl;
+        for(int i = 0; i < argc; i++) cout << "argv[" << i << "]=" << argv[i] << "\n";
     }
-    else
+    if(argc > 1)
     {
-        input = read_input(cin, true);
+        cout << "argc=" << argc << endl;
+        while(!exist_bins && i != argc)
+        {
+            if(strcmp(argv[i],"-bins") == 0) exist_bins = true;
+            argument = i;
+            i++;
+        }
+        if (exist_bins && argument < argc && strlen(argv[argument + 1]) != 0)
+        {
+     input.bin_count = atol(argv[argument + 1]);
+cout << "bin =" << input.bin_count;
+        return 0;
+        }
+        else
+        {
+            cout << "instruction";
+            //return 0;
+
+        }
+    }
+    if(argc > 1)
+    {
+        if(argument  < 2) input = download(argv[argument + 2]);
+        else input = download(argv[argument - 1]);
     }
 
 
-    const auto bins = make_histogram (input);
+    else {
+            input = read_input(cin, true);
+    }
+
+const auto bins = make_histogram (input);
     show_histogram_svg(bins,input);
     return 0;
 
