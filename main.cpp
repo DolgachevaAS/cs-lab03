@@ -5,7 +5,6 @@
 #include <curl/curl.h>
 #include <sstream>
 #include <string>
-#include "histogram1.h"
 #include "histogram.h"
 #include "svg.h"
 #include <cstdio>
@@ -13,41 +12,92 @@
 
 using namespace std;
 
-vector<double> input_numbers(istream& in, size_t count)
+
+Option arguments(int argc, char* argv[])
 {
-    vector <double> result(count);
-    for (int i=0; i<count; i++)
+    Option option_bins;
+    option_bins.argv_array=0;
+    option_bins.bins=0;
+    option_bins.right_bins=false;
+    option_bins.instruction=false;
+
+    for (int i = 1; i < argc; i++)
     {
-        in>>result[i];
+        if (argv[i][0] == '-')
+        {
+            if (strcmp(argv[i],"-bins") == 0)
+            {
+                if(i+1<argc)
+                {
+                    option_bins.bins= atoi(argv[i+1]);
+                    if (option_bins.bins)
+                    {
+                        option_bins.right_bins=true;
+                        i++;
+                    }
+                    else
+                    {
+                        option_bins.instruction=true;
+                    }
+                }
+
+                else
+                {
+                    option_bins.instruction=true;
+                }
+            }
+        }
+        else
+        {
+            option_bins.argv_array=argv[i];
+        }
+    }
+    return option_bins;
+}
+vector<double>
+input_numbers(istream& in,size_t count)
+{
+    vector<double> result(count);
+    for (size_t i = 0; i < count; i++)
+    {
+        in >> result[i];
     }
     return result;
 }
 
 Input
-read_input(istream& in, bool prompt )
+read_input(istream& in,bool prompt,const Option &option_bins)
 {
     Input Input;
-
-
-    if (prompt)
+    size_t number_count;
+    if (option_bins.right_bins)
     {
         cerr << "Enter number count: ";
-        in >> Input.number_count;
-
+        in >> number_count;
         cerr << "Enter numbers: ";
-        Input.numbers = input_numbers(in, Input.number_count);
-
-        /*cerr << "Enter bin count: ";
-        in >> Input.bin_count;*/
+        Input.numbers=input_numbers(in, number_count);
+        Input.bin_count=option_bins.bins;
+        return Input;
+    }
+    if(prompt)
+    {
+        cerr << "Enter number count: ";
+        in >> number_count;
+        cerr << "Enter numbers: ";
+        Input.numbers = input_numbers(in, number_count);
+        cerr << "Enter column count: ";
+        in >> Input.bin_count;
     }
     else
     {
-        in >> Input.number_count;
-        Input.numbers = input_numbers(in, Input.number_count);
-       // in >> Input.bin_count;
+        in >> number_count;
+        Input.numbers = input_numbers(in, number_count);
+        in >> Input.bin_count;
     }
+
     return Input;
 }
+
 size_t
 write_data(void* items, size_t item_size, size_t item_count, void* ctx)
 {
@@ -59,10 +109,12 @@ write_data(void* items, size_t item_size, size_t item_count, void* ctx)
 }
 
 Input
-download(const string& address)
+download(const string& address,const Option &option_bins)
 {
     stringstream buffer;
+
     curl_global_init(CURL_GLOBAL_ALL);
+
     CURL *curl = curl_easy_init();
     if(curl)
     {
@@ -71,16 +123,15 @@ download(const string& address)
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
         res = curl_easy_perform(curl);
-        if (res != CURLE_OK)
+        if (res)
         {
             cout << curl_easy_strerror(res) << endl;
             exit(1);
         }
-        curl_easy_cleanup(curl);
     }
-    return read_input(buffer, false);
+    curl_easy_cleanup(curl);
+    return read_input(buffer, false, option_bins);
 }
-
 
 vector<size_t>
 make_histogram( struct Input Input)
@@ -103,9 +154,10 @@ make_histogram( struct Input Input)
 }
 
 
-
-int main(int argc, char* argv[])
+int
+main(int argc, char* argv[])
 {
+    Input input;
     /* char system_dir[MAX_COMPUTERNAME_LENGTH + 1];
     DWORD Size = sizeof(system_dir);
     GetComputerNameA(system_dir, &Size);
@@ -125,53 +177,25 @@ int main(int argc, char* argv[])
     printf("major version: %u.\n", version_major);
     printf("minor version: %u.\n", version_minor);
     if ((info &0x40000000) == 0) {
-        DWORD build = platform;
-        printf("build: %u.\n", build);
+    DWORD build = platform;
+    printf("build: %u.\n", build);
     } */
-
-    string info = make_info_text();
-  Input input;
-bool exist_bins = false;  int argument; int i = 0;
-    if(argc > 1)
+    Option option_bins=arguments(argc,argv);
+    if (option_bins.instruction)
     {
-        cout << "argc=" << argc << endl;
-        for(int i = 0; i < argc; i++) cout << "argv[" << i << "]=" << argv[i] << "\n";
+        cerr<<"Enter options that match the condition";
+        return 1;
     }
-    if(argc > 1)
+    if (option_bins.argv_array)
     {
-        cout << "argc=" << argc << endl;
-        while(!exist_bins && i != argc)
-        {
-            if(strcmp(argv[i],"-bins") == 0) exist_bins = true;
-            argument = i;
-            i++;
-        }
-        if (exist_bins && argument < argc && strlen(argv[argument + 1]) != 0)
-        {
-     input.bin_count = atol(argv[argument + 1]);
-cout << "bin =" << input.bin_count;
-        return 0;
-        }
-        else
-        {
-            cout << "instruction";
-            //return 0;
-
-        }
+        input = download(option_bins.argv_array,option_bins);
     }
-    if(argc > 1)
+    else
     {
-        if(argument  < 2) input = download(argv[argument + 2]);
-        else input = download(argv[argument - 1]);
+        input = read_input(cin, true, option_bins);
     }
+    const auto bins = make_histogram(input);
+    show_histogram_svg(bins, input);
 
-
-    else {
-            input = read_input(cin, true);
-    }
-
-const auto bins = make_histogram (input);
-    show_histogram_svg(bins,input);
     return 0;
-
 }

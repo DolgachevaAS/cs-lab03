@@ -13,6 +13,14 @@ struct Input
     size_t number_count;
 };
 
+struct Option
+{
+    size_t bins;
+    bool right_bins;
+    bool instruction;
+    char* argv_array;
+};
+
 void find_minmax (const vector<double>& numbers, double& min, double& max);
 string make_info_text();
 
