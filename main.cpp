@@ -12,7 +12,6 @@
 
 using namespace std;
 
-
 Option arguments(int argc, char* argv[])
 {
     Option option_bins;
@@ -73,9 +72,9 @@ read_input(istream& in,bool prompt,const Option &option_bins)
     if (option_bins.right_bins)
     {
         cerr << "Enter number count: ";
-        in >> number_count;
+        in >> Input.number_count;
         cerr << "Enter numbers: ";
-        Input.numbers=input_numbers(in, number_count);
+        Input.numbers=input_numbers(in, Input.number_count);
         Input.bin_count=option_bins.bins;
         return Input;
     }
@@ -133,8 +132,7 @@ download(const string& address,const Option &option_bins)
     return read_input(buffer, false, option_bins);
 }
 
-vector<size_t>
-make_histogram( struct Input Input)
+vector<size_t> make_histogram( struct Input Input)
 {
     vector<size_t> bins(Input.bin_count, 0);
 
@@ -194,8 +192,9 @@ main(int argc, char* argv[])
     {
         input = read_input(cin, true, option_bins);
     }
+
     const auto bins = make_histogram(input);
-    show_histogram_svg(bins, input);
+    show_histogram_svg(bins, input.number_count);
 
     return 0;
 }

@@ -4,6 +4,7 @@
 #include "histogram1.h"
 #include <vector>
 #include <string>
+
 using namespace std;
 
 void svg_begin(double width, double height)
@@ -35,7 +36,9 @@ void svg_text1(double left, double baseline, string text)
     cout << "<text x='" << left << "' y='" << baseline << "'>" << text <<"</text>";
 }
 
-void show_histogram_svg(const vector<size_t> bins, struct Input& Input)
+
+
+void show_histogram_svg(const vector<size_t> bins,size_t &number_count)
 {
     const size_t MAX_ASTERISK=30;
     const auto IMAGE_WIDTH = 500;
@@ -66,10 +69,11 @@ void show_histogram_svg(const vector<size_t> bins, struct Input& Input)
         height = BLOCK_WIDTH * height;
         svg_text(TEXT_LEFT, top + TEXT_BASELINE, to_string(bin));
         svg_rect(TEXT_WIDTH, top, height, BIN_HEIGHT, "yellow", "black");
-        size_t pr=procent(Input.number_count,bin);
-        svg_text( WIDTH_TO_PROCENT, top + TEXT_BASELINE, to_string(pr)+"%");
+       size_t pr=procent(number_count,bin);
+               svg_text( WIDTH_TO_PROCENT, top + TEXT_BASELINE, to_string(pr)+"%");
         top += BIN_HEIGHT;
     }
     svg_text1(TEXT_LEFT, top+BIN_HEIGHT, make_info_text());
     svg_end();
 }
+
